@@ -1,0 +1,15 @@
+ext {
+    VersionCode = 1
+    VersionName = '1.0.0'
+    CompileSdkVersion = 27
+    BuildToolsVersion =
+
+    // Deps for libraries
+    appcompat = 'com.android.support:appcompat-v7:27.1.1'
+    constraint_layout = 'com.android.support.constraint:constraint-layout:1.1.0'
+
+    junit = 'junit:junit:4.12'
+    test_runner = 'com.android.support.test:runner:1.0.1'
+    espresso_core = 'com.android.support.test.espresso:espresso-core:3.0.1'
+    recycler_view = 'com.android.support:recyclerview-v7:27.1.1'
+}
