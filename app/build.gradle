@@ -6,15 +6,15 @@ android {
     defaultConfig {
         applicationId "com.jocoo.chartdemo"
         minSdkVersion 15
-        targetSdkVersion 27
+        targetSdkVersion 26
         versionCode VersionCode
         versionName VersionName
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
-        externalNativeBuild {
-            cmake {
-                cppFlags ""
-            }
-        }
+//        externalNativeBuild {
+//            cmake {
+//                cppFlags ""
+//            }
+//        }
     }
     buildTypes {
         release {
@@ -22,11 +22,11 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
-    externalNativeBuild {
-        cmake {
-            path "CMakeLists.txt"
-        }
-    }
+//    externalNativeBuild {
+//        cmake {
+//            path "CMakeLists.txt"
+//        }
+//    }
 }
 
 dependencies {
@@ -37,4 +37,13 @@ dependencies {
     androidTestImplementation test_runner
     androidTestImplementation espresso_core
     implementation recycler_view
+    implementation multidex
+    implementation rxjava2
+    implementation butter_knife
+    annotationProcessor butter_knife_compiler
+    implementation dagger2
+    annotationProcessor dagger2_compiler
+    implementation dagger2_android
+    annotationProcessor dagger2_android_compiler
+    implementation fresco
 }

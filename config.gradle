@@ -1,7 +1,7 @@
 ext {
     VersionCode = 1
     VersionName = '1.0.0'
-    CompileSdkVersion = 27
+    CompileSdkVersion = 26
     BuildToolsVersion =
 
     // Deps for libraries
@@ -12,4 +12,14 @@ ext {
     test_runner = 'com.android.support.test:runner:1.0.1'
     espresso_core = 'com.android.support.test.espresso:espresso-core:3.0.1'
     recycler_view = 'com.android.support:recyclerview-v7:27.1.1'
+    multidex = 'com.android.support:multidex:1.0.3'
+    rxjava2 = 'io.reactivex.rxjava2:rxjava:2.1.14'
+    butter_knife = 'com.jakewharton:butterknife:8.8.1'
+    butter_knife_compiler = 'com.jakewharton:butterknife-compiler:8.8.1'
+    dagger2 = 'com.google.dagger:dagger:2.16'
+    dagger2_compiler = 'com.google.dagger:dagger-compiler:2.16'
+    dagger2_android = 'com.google.dagger:dagger-android:2.16'
+    dagger2_android_support = 'com.google.dagger:dagger-android-support:2.16'
+    dagger2_android_compiler = 'com.google.dagger:dagger-android-processor:2.16'
+    fresco = 'com.facebook.fresco:fresco:1.9.0'
 }

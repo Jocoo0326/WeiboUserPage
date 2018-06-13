@@ -1,31 +1,45 @@
 package com.jocoo.chartdemo.ui;
 
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
-import android.support.v7.app.AppCompatActivity;
 import android.widget.FrameLayout;
 
 import com.jocoo.chartdemo.R;
 import com.jocoo.chartdemo.adapter.MainPagerAdapter;
+import com.jocoo.chartdemo.base.activity.BaseActivity;
+import com.jocoo.chartdemo.contract.MainPageContract;
+import com.jocoo.chartdemo.presenter.MainPagePresenter;
 import com.jocoo.chartdemo.util.Util;
+import com.jocoo.chartdemo.widget.StretchSwipeRefreshLayout;
 
 import java.util.List;
 
-public class MainPageActivity extends AppCompatActivity {
+import butterknife.BindView;
 
-    private ViewPager viewPager;
-    private FrameLayout topPanelContainer;
+public class MainPageActivity extends BaseActivity<MainPagePresenter>
+        implements MainPageContract.View {
+    @BindView(R.id.viewPager) ViewPager viewPager;
+    @BindView(R.id.topPanelContainer) FrameLayout topPanelContainer;
+//    @BindView(R.id.stretchLayout) StretchSwipeRefreshLayout stretchSwipeRefreshLayout;
     private int topPanelMaxOffset;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main_page);
+    }
 
+    @Override
+    protected void onViewCreated() {
         initView();
         initData();
+    }
+
+    @Override
+    protected int getLayoutId() {
+        return R.layout.activity_main_page;
     }
 
     private void initData() {
@@ -35,9 +49,17 @@ public class MainPageActivity extends AppCompatActivity {
     }
 
     private void initView() {
-        viewPager = findViewById(R.id.viewPager);
-        topPanelContainer = findViewById(R.id.topPanelContainer);
         topPanelMaxOffset = Util.dp2px(this, 120);
+//        stretchSwipeRefreshLayout.setOnPanelHeightChangedListener(new StretchSwipeRefreshLayout.OnPanelHeightChangedListener() {
+//            @Override
+//            public void onPanelHeightChanged(int height) {
+//                final List<Fragment> fragments = getSupportFragmentManager().getFragments();
+//                for (Fragment fragment : fragments) {
+//                    final NewsFragment newsFragment = (NewsFragment) fragment;
+//                    newsFragment.offsetRecyclerViewTopPanel(height);
+//                }
+//            }
+//        });
     }
 
     public void offsetTopPanel(NewsFragment childFragment, int offset, int dy) {

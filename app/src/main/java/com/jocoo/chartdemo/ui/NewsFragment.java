@@ -13,13 +13,14 @@ import android.view.ViewGroup;
 
 import com.jocoo.chartdemo.R;
 import com.jocoo.chartdemo.adapter.NewsAdapter;
+import com.jocoo.chartdemo.widget.StretchLinearLayoutManager;
 
 public class NewsFragment extends Fragment {
 
     private RecyclerView recyclerView;
     private NewsAdapter mAdapter;
     private MainPageActivity mContainerActivity;
-    private LinearLayoutManager layoutManager;
+    private StretchLinearLayoutManager layoutManager;
     int offset = 0;
 
     @Override
@@ -33,7 +34,8 @@ public class NewsFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_news, container, false);
         recyclerView = view.findViewById(R.id.recyclerView);
-        layoutManager = new LinearLayoutManager(getContext());
+        layoutManager = new StretchLinearLayoutManager(getContext());
+        layoutManager.setRecyclerViewForInit(recyclerView);
         recyclerView.setLayoutManager(layoutManager);
         mAdapter = new NewsAdapter();
         recyclerView.setAdapter(mAdapter);
@@ -62,5 +64,9 @@ public class NewsFragment extends Fragment {
         if (recyclerView != null) {
             recyclerView.scrollBy(0, dy);
         }
+    }
+
+    public void offsetRecyclerViewTopPanel(int height) {
+        mAdapter.notifyHeightChanged(height);
     }
 }

@@ -12,6 +12,7 @@ public class NewsAdapter extends BaseRecyclerViewAdapter {
 
     private static final int TYPE_TOP_PANEL = 0;
     private static final int TYPE_NEWS_ITEM = 1;
+    private int topPanelHeight = 0;
 
     @Override
     public int getItemViewType(int position) {
@@ -34,6 +35,11 @@ public class NewsAdapter extends BaseRecyclerViewAdapter {
         return 20;
     }
 
+    public void notifyHeightChanged(int height) {
+        topPanelHeight = height;
+        notifyDataSetChanged();
+    }
+
     class NewsItemViewHolder extends AbstractViewHolder {
         private final TextView index;
 
@@ -45,6 +51,21 @@ public class NewsAdapter extends BaseRecyclerViewAdapter {
         @Override
         public void onBindViewHolder(int position) {
             index.setText(String.valueOf(position));
+        }
+    }
+
+    class TopPanelViewHolder extends AbstractViewHolder {
+        public TopPanelViewHolder(View view) {
+            super(view);
+        }
+
+        @Override
+        public void onBindViewHolder(int position) {
+//            ViewGroup.LayoutParams params = itemView.getLayoutParams();
+//            if (params != null) {
+//                params.height = topPanelHeight;
+//                itemView.setLayoutParams(params);
+//            }
         }
     }
 }
