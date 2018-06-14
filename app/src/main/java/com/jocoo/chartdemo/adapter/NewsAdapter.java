@@ -57,6 +57,7 @@ public class NewsAdapter extends BaseRecyclerViewAdapter {
     class TopPanelViewHolder extends AbstractViewHolder {
         public TopPanelViewHolder(View view) {
             super(view);
+            setIsRecyclable(false);
         }
 
         @Override

@@ -5,6 +5,7 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
+import android.util.Log;
 import android.widget.FrameLayout;
 
 import com.jocoo.chartdemo.R;
@@ -25,6 +26,7 @@ public class MainPageActivity extends BaseActivity<MainPagePresenter>
     @BindView(R.id.topPanelContainer) FrameLayout topPanelContainer;
 //    @BindView(R.id.stretchLayout) StretchSwipeRefreshLayout stretchSwipeRefreshLayout;
     private int topPanelMaxOffset;
+    protected int mOffset;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -62,18 +64,18 @@ public class MainPageActivity extends BaseActivity<MainPagePresenter>
 //        });
     }
 
-    public void offsetTopPanel(NewsFragment childFragment, int offset, int dy) {
-        if (offset > topPanelMaxOffset && dy < 0) return;
-        int lastY = (int) topPanelContainer.getY();
-        final int newY = Math.max(-topPanelMaxOffset,
-                Math.min(offset <= topPanelMaxOffset ? -offset : (lastY - dy), 0));
-        topPanelContainer.setY(newY);
+    public void offsetTopPanel(NewsFragment childFragment, int offset) {
+        int lastY = mOffset;
+        mOffset = offset;
+        topPanelContainer.setY(offset);
+        int newY = offset;
+//        Log.i("Jocoo", "lastY: " + lastY + " newY: " + newY);
         int deltaY = lastY - newY;
         final List<Fragment> fragments = getSupportFragmentManager().getFragments();
         for (Fragment fragment : fragments) {
             if (fragment != childFragment) {
                 final NewsFragment newsFragment = (NewsFragment) fragment;
-                newsFragment.offsetRecyclerView(deltaY);
+                newsFragment.offsetRecyclerView(offset, deltaY);
             }
         }
     }

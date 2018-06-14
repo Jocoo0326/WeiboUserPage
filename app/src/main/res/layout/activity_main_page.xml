@@ -4,10 +4,10 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <com.jocoo.chartdemo.widget.StretchSwipeRefreshLayout
-        android:id="@+id/stretchLayout"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
+    <!--<com.jocoo.chartdemo.widget.StretchSwipeRefreshLayout-->
+        <!--android:id="@+id/stretchLayout"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="match_parent">-->
 
         <FrameLayout
             android:layout_width="match_parent"
@@ -26,7 +26,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="160dp"
                 android:tag="panel"
-                android:visibility="invisible">
+                android:visibility="visible">
 
                 <ImageView
                     android:id="@+id/topPanelImage"
@@ -69,6 +69,6 @@
                 </RelativeLayout>
             </FrameLayout>
         </FrameLayout>
-    </com.jocoo.chartdemo.widget.StretchSwipeRefreshLayout>
+    <!--</com.jocoo.chartdemo.widget.StretchSwipeRefreshLayout>-->
 
 </FrameLayout>

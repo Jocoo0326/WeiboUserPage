@@ -8,19 +8,22 @@ import android.support.v7.widget.RecyclerView;
 import android.util.AttributeSet;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ListView;
 
 import com.jocoo.chartdemo.util.Util;
 
 public class StretchSwipeRefreshLayout extends BaseSwipeRefreshLayout {
 
-
     private static final float DRAG_RATE = .5f;
+    public static final int MIN_PANEL_DP = 160;
+    public static final int MAX_PANEL_DP = 300;
     private View mPanelLayout;
     private View mLoading;
-    private int MAX_DRAG_DISTANCE = Util.dp2px(getContext(), 240);
-    private OnPanelHeightChangedListener mOnPanelHeightChangedListener;
+    private int MAX_DRAG_DISTANCE = Util.dp2px(getContext(), MAX_PANEL_DP);
+    private int originalStretchHeight = Util.dp2px(getContext(), MIN_PANEL_DP);
     private View target;
-    private int originalStretchHeight = Util.dp2px(getContext(), 160);
+    private int currentPanelHeight;
+    private OnPanelHeightChangedListener mOnPanelHeightChangedListener;
 
     public StretchSwipeRefreshLayout(@NonNull Context context) {
         super(context);
@@ -44,7 +47,7 @@ public class StretchSwipeRefreshLayout extends BaseSwipeRefreshLayout {
 
     @Override
     protected void finishSwipe(float yDiff) {
-        ValueAnimator restoreAnim = ValueAnimator.ofFloat(MAX_DRAG_DISTANCE + yDiff * DRAG_RATE, MAX_DRAG_DISTANCE);
+        ValueAnimator restoreAnim = ValueAnimator.ofFloat(currentPanelHeight, originalStretchHeight);
         restoreAnim.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
             @Override
             public void onAnimationUpdate(ValueAnimator animation) {
@@ -79,7 +82,7 @@ public class StretchSwipeRefreshLayout extends BaseSwipeRefreshLayout {
             parent = (ViewGroup) view;
             for (int i = parent.getChildCount() - 1; i >= 0; i--) {
                 final View child = parent.getChildAt(i);
-                if (child instanceof RecyclerView) return child;
+                if (child instanceof RecyclerView || child instanceof ListView) return child;
                 View target = findFirstRecyclerView(child);
                 if (target != null) return target;
             }
@@ -89,7 +92,10 @@ public class StretchSwipeRefreshLayout extends BaseSwipeRefreshLayout {
 
     @Override
     protected void onDraggingDown(float yDiff) {
-        setPanelLayoutHeight((int) ((MAX_DRAG_DISTANCE + yDiff * DRAG_RATE) * 1));
+        int height = currentPanelHeight = (int) Math.max(
+                Math.min(originalStretchHeight + yDiff * DRAG_RATE, MAX_DRAG_DISTANCE),
+                originalStretchHeight);
+        setPanelLayoutHeight(height);
     }
 
     public interface OnPanelHeightChangedListener {

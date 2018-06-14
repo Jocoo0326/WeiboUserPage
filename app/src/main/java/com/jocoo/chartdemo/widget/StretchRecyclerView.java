@@ -10,8 +10,10 @@ import android.view.MotionEvent;
 import com.jocoo.chartdemo.util.Util;
 
 public class StretchRecyclerView extends RecyclerView {
-    private int mOriginalStretchHeight = Util.dp2px(getContext(), 160);
-    private int mMaxStretchDistance = Util.dp2px(getContext(), 240);
+    private int mOriginalStretchHeight =
+            Util.dp2px(getContext(), StretchSwipeRefreshLayout.MIN_PANEL_DP);
+    private int mMaxStretchDistance =
+            Util.dp2px(getContext(), StretchSwipeRefreshLayout.MAX_PANEL_DP);
 
     public StretchRecyclerView(Context context) {
         super(context);

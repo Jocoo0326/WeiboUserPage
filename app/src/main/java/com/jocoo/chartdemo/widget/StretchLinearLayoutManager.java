@@ -49,7 +49,6 @@ public class StretchLinearLayoutManager extends LinearLayoutManager {
                 final int action = e.getActionMasked();
                 if ((action == MotionEvent.ACTION_UP || action == MotionEvent.ACTION_CANCEL) && mStretching) {
                     ValueAnimator restoreAnim = ValueAnimator.ofFloat(mCurrentStretchHeight, mOriginalStretchHeight);
-                    restoreAnim.setDuration(1000);
                     restoreAnim.setInterpolator(new AccelerateDecelerateInterpolator());
                     restoreAnim.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
                         @Override
@@ -89,14 +88,15 @@ public class StretchLinearLayoutManager extends LinearLayoutManager {
             final View view = getChildAt(0);
             ViewGroup.LayoutParams params = view.getLayoutParams();
             if (params != null) {
-                int h = params.height;
+                int h, oldHeight;
+                oldHeight = h = params.height;
                 h = Math.max(h, mOriginalStretchHeight);
                 h += -dy;
                 h = Math.max(Math.min(h, mMaxStretchDistance), mOriginalStretchHeight);
                 params.height = mCurrentStretchHeight = h;
                 mStretching = true;
+                view.offsetTopAndBottom(oldHeight - h);
                 view.setLayoutParams(params);
-                view.offsetTopAndBottom(dy);
             }
         }
         return result;
