@@ -9,7 +9,6 @@ import android.util.SparseIntArray;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewConfiguration;
-import android.view.ViewGroup;
 import android.view.animation.AccelerateDecelerateInterpolator;
 import android.widget.AbsListView;
 import android.widget.ListView;
@@ -19,11 +18,11 @@ import com.jocoo.chartdemo.util.Util;
 import static android.support.v4.widget.ViewDragHelper.INVALID_POINTER;
 
 public class StretchListView extends ListView {
+  public static final int MIN_PANEL_DP = 160;
+  public static final int MAX_PANEL_DP = 300;
   private final int mTouchSlop;
-  private int mOriginalStretchHeight =
-      Util.dp2px(getContext(), StretchSwipeRefreshLayout.MIN_PANEL_DP);
-  private int mMaxStretchDistance =
-      Util.dp2px(getContext(), StretchSwipeRefreshLayout.MAX_PANEL_DP);
+  private int mOriginalStretchHeight = Util.dp2px(getContext(), MIN_PANEL_DP);
+  private int mMaxStretchDistance = Util.dp2px(getContext(), MAX_PANEL_DP);
   private int mActivePointerId = -1;
   private float mInitialDownY;
   private SparseIntArray mChildrenHeight;

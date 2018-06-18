@@ -22,9 +22,9 @@ import com.jocoo.chartdemo.util.Util;
 
 public class StretchTopPanelLayout extends FrameLayout {
   private int mOriginalStretchHeight =
-      Util.dp2px(getContext(), StretchSwipeRefreshLayout.MIN_PANEL_DP);
+      Util.dp2px(getContext(), StretchListView.MIN_PANEL_DP);
   private int mMaxStretchDistance =
-      Util.dp2px(getContext(), StretchSwipeRefreshLayout.MAX_PANEL_DP);
+      Util.dp2px(getContext(), StretchListView.MAX_PANEL_DP);
   private View loading;
   private boolean isRefreshing;
   private ValueAnimator rotateAnim;
@@ -62,6 +62,7 @@ public class StretchTopPanelLayout extends FrameLayout {
       public void onAnimationEnd(Animator animation) {
         super.onAnimationEnd(animation);
         loading.setRotation(0);
+        isRefreshing = false;
       }
     });
   }

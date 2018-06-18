@@ -25,7 +25,6 @@ public class MainPageActivity extends BaseActivity<MainPagePresenter>
     implements MainPageContract.View {
   @BindView(R.id.viewPager) ViewPager viewPager;
   @BindView(R.id.topPanelContainer) FrameLayout topPanelContainer;
-  //    @BindView(R.id.stretchLayout) StretchSwipeRefreshLayout stretchSwipeRefreshLayout;
   private int topPanelMaxOffset;
   protected int mOffset;
 
@@ -77,7 +76,6 @@ public class MainPageActivity extends BaseActivity<MainPagePresenter>
     }
     deltaY = newY - currentY;
     mOffset = newY;
-//    Util.setViewHeight(topPanelContainer, point.y - point.x);
     topPanelContainer.setY(newY);
     final List<Fragment> fragments = getSupportFragmentManager().getFragments();
     for (Fragment fragment : fragments) {
