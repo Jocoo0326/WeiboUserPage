@@ -1,74 +1,69 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+<FrameLayout
+  xmlns:android="http://schemas.android.com/apk/res/android"
+  xmlns:app="http://schemas.android.com/apk/res-auto"
+  android:layout_width="match_parent"
+  android:layout_height="match_parent">
+
+  <FrameLayout
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <!--<com.jocoo.chartdemo.widget.StretchSwipeRefreshLayout-->
-        <!--android:id="@+id/stretchLayout"-->
-        <!--android:layout_width="match_parent"-->
-        <!--android:layout_height="match_parent">-->
+    <android.support.v4.view.ViewPager
+      android:id="@+id/viewPager"
+      android:layout_width="match_parent"
+      android:layout_height="match_parent"
+      android:tag="target">
 
-        <FrameLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
+    </android.support.v4.view.ViewPager>
 
-            <android.support.v4.view.ViewPager
-                android:id="@+id/viewPager"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:tag="target">
+    <com.jocoo.chartdemo.widget.StretchTopPanelLayout
+      android:id="@+id/topPanelContainer"
+      android:layout_width="match_parent"
+      android:layout_height="160dp"
+      android:visibility="visible">
 
-            </android.support.v4.view.ViewPager>
+      <ImageView
+        android:id="@+id/topPanelImage"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:scaleType="centerCrop"
+        android:src="@mipmap/bg_me_top" />
 
-            <FrameLayout
-                android:id="@+id/topPanelContainer"
-                android:layout_width="match_parent"
-                android:layout_height="160dp"
-                android:tag="panel"
-                android:visibility="visible">
+      <ImageView
+        android:id="@+id/loading"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:layout_gravity="end"
+        android:scaleType="fitCenter"
+        android:src="@mipmap/loading_drawable" />
 
-                <ImageView
-                    android:id="@+id/topPanelImage"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:scaleType="centerCrop"
-                    android:src="@mipmap/bg_me_top" />
+      <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="160dp"
+        android:layout_gravity="bottom">
 
-                <ImageView
-                    android:layout_width="30dp"
-                    android:layout_height="30dp"
-                    android:layout_gravity="end"
-                    android:scaleType="fitCenter"
-                    android:src="@mipmap/loading_drawable" />
+        <com.facebook.drawee.view.SimpleDraweeView
+          android:id="@+id/avatar"
+          android:layout_width="60dp"
+          android:layout_height="60dp"
+          android:layout_centerInParent="true"
+          app:actualImageResource="@mipmap/avatar"
+          app:roundAsCircle="true"
+          app:roundingBorderColor="@color/white"
+          app:roundingBorderWidth="2dp" />
 
-                <RelativeLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="160dp"
-                    android:layout_gravity="bottom">
-
-                    <com.facebook.drawee.view.SimpleDraweeView
-                        android:id="@+id/avatar"
-                        android:layout_width="60dp"
-                        android:layout_height="60dp"
-                        android:layout_centerInParent="true"
-                        app:actualImageResource="@mipmap/avatar"
-                        app:roundAsCircle="true"
-                        app:roundingBorderColor="@color/white"
-                        app:roundingBorderWidth="2dp" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_below="@id/avatar"
-                        android:layout_centerHorizontal="true"
-                        android:layout_gravity="bottom"
-                        android:text="Jocoo"
-                        android:textColor="@android:color/holo_orange_light"
-                        android:textSize="20dp" />
-                </RelativeLayout>
-            </FrameLayout>
-        </FrameLayout>
-    <!--</com.jocoo.chartdemo.widget.StretchSwipeRefreshLayout>-->
+        <TextView
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:layout_below="@id/avatar"
+          android:layout_centerHorizontal="true"
+          android:layout_gravity="bottom"
+          android:text="Jocoo"
+          android:textColor="@android:color/holo_orange_light"
+          android:textSize="20dp" />
+      </RelativeLayout>
+    </com.jocoo.chartdemo.widget.StretchTopPanelLayout>
+  </FrameLayout>
 
 </FrameLayout>
