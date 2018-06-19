@@ -5,8 +5,10 @@ import android.animation.AnimatorListenerAdapter;
 import android.animation.ValueAnimator;
 import android.content.Context;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.util.SparseIntArray;
 import android.view.MotionEvent;
+import android.view.VelocityTracker;
 import android.view.View;
 import android.view.ViewConfiguration;
 import android.view.animation.AccelerateDecelerateInterpolator;
@@ -21,6 +23,8 @@ public class StretchListView extends ListView {
   public static final int MIN_PANEL_DP = 160;
   public static final int MAX_PANEL_DP = 300;
   private final int mTouchSlop;
+  private final int mMinimumVelocity;
+  private final int mMaximumVelocity;
   private int mOriginalStretchHeight = Util.dp2px(getContext(), MIN_PANEL_DP);
   private int mMaxStretchDistance = Util.dp2px(getContext(), MAX_PANEL_DP);
   private int mActivePointerId = -1;
@@ -28,9 +32,11 @@ public class StretchListView extends ListView {
   private SparseIntArray mChildrenHeight;
   private int lastPosition;
   private MyOnScrollChangeListener myOnScrollChangeListener;
-  private boolean isFirstMoveAfterReachedTop;
+  private boolean isFirstMoveAfterReachedTop = true;
   private View topPanelLayout;
   private float mInitialDownX;
+  private VelocityTracker mVelocityTracker;
+  private float mVelocityScale = 1f;
 
   public StretchListView(Context context) {
     this(context, null);
@@ -44,6 +50,8 @@ public class StretchListView extends ListView {
     super(context, attrs, defStyleAttr);
     ViewConfiguration viewConfiguration = ViewConfiguration.get(getContext());
     mTouchSlop = viewConfiguration.getScaledTouchSlop();
+    mMinimumVelocity = viewConfiguration.getScaledMinimumFlingVelocity();
+    mMaximumVelocity = viewConfiguration.getScaledMaximumFlingVelocity();
     setOnScrollListener(new OnScrollListener() {
       @Override
       public void onScrollStateChanged(AbsListView view, int scrollState) {
@@ -88,9 +96,6 @@ public class StretchListView extends ListView {
   @Override
   public boolean onTouchEvent(MotionEvent event) {
     boolean result = super.onTouchEvent(event);
-    if (!hasReachedToTop()) {
-      return result;
-    }
     final int action = event.getActionMasked();
     int pointerIndex;
 
@@ -99,6 +104,9 @@ public class StretchListView extends ListView {
         mActivePointerId = event.getPointerId(0);
         break;
       case MotionEvent.ACTION_MOVE: {
+        if (!hasReachedToTop()) {
+          return result;
+        }
         pointerIndex = event.findPointerIndex(mActivePointerId);
         if (pointerIndex < 0) {
           return false;
@@ -109,6 +117,8 @@ public class StretchListView extends ListView {
           mInitialDownX = x;
           mInitialDownY = y;
           isFirstMoveAfterReachedTop = false;
+          initVelocityTracker();
+          mVelocityTracker.addMovement(event);
         }
 
         final float xDiff = x - mInitialDownX;
@@ -116,10 +126,8 @@ public class StretchListView extends ListView {
         if (yDiff > 0 && yDiff > mTouchSlop && Math.abs(yDiff) > Math.abs(xDiff)) {
           reachedToTop(yDiff * .5f);
           getParent().requestDisallowInterceptTouchEvent(true);
-          return true;
-        } else {
-          return false;
         }
+        return true;
       }
       case MotionEvent.ACTION_POINTER_DOWN: {
         pointerIndex = event.getActionIndex();
@@ -139,17 +147,33 @@ public class StretchListView extends ListView {
         if (pointerIndex < 0) {
           return false;
         }
+
+        final VelocityTracker velocityTracker = mVelocityTracker;
+        velocityTracker.computeCurrentVelocity(1000, mMaximumVelocity);
+
+        final int initialVelocity = (int)
+            (velocityTracker.getYVelocity(mActivePointerId) * mVelocityScale);
+        boolean flingVelocity = Math.abs(initialVelocity) > mMinimumVelocity;
+        Log.i("Jocoo", "onTouchEvent: fling: " + initialVelocity);
+        restoreHeaderView();
         mActivePointerId = INVALID_POINTER;
         isFirstMoveAfterReachedTop = true;
-        restoreHeaderView();
         break;
       }
     }
     return result;
   }
 
+  private void initVelocityTracker() {
+    if (mVelocityTracker == null) {
+      mVelocityTracker = VelocityTracker.obtain();
+    } else {
+      mVelocityTracker.clear();
+    }
+  }
+
   private void restoreHeaderView() {
-    if (getChildCount() == 0 || getFirstVisiblePosition() != 0) return;
+    if (getChildCount() == 0) return;
     final View headerView = getChildAt(0);
     int mCurrentStretchHeight = headerView.getHeight();
     if (mCurrentStretchHeight == mOriginalStretchHeight) return;
@@ -158,6 +182,14 @@ public class StretchListView extends ListView {
     restoreAnim.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
       @Override
       public void onAnimationUpdate(ValueAnimator animation) {
+        Log.i("Jocoo", "onAnimationUpdate: " + getFirstVisiblePosition());
+        if (getFirstVisiblePosition() != 0) {
+          Util.setViewHeight(topPanelLayout, mOriginalStretchHeight);
+          if (topPanelLayout != null) {
+            topPanelLayout.setY(-mOriginalStretchHeight);
+          }
+          return;
+        }
         float val = (float) animation.getAnimatedValue();
         final View view = getChildAt(0);
         Util.setViewHeight(view, (int) val);
